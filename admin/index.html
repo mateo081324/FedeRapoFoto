@@ -63,35 +63,132 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="admin-main">
-      <section class="admin-hero">
-        <div class="admin-title-area">
-          <h2>Colección de Obras</h2>
-          <p>Añade nuevas capturas, edita fichas técnicas o cambia el orden de exhibición de tu portafolio.</p>
-        </div>
-        <div>
-          <button class="btn btn-primary" onclick="openAddModal()">
-            + Añadir Fotografía
-          </button>
-        </div>
-      </section>
+      <!-- PESTAÑAS DE NAVEGACIÓN -->
+      <nav class="admin-nav-tabs">
+        <button class="admin-tab-btn active" id="tabBtnFotos" onclick="switchSection('fotos')">
+          📷 Fotografías (<span id="countFotosBadge">0</span>)
+        </button>
+        <button class="admin-tab-btn" id="tabBtnVideos" onclick="switchSection('videos')">
+          🎬 Videos (<span id="countVideosBadge">0</span>)
+        </button>
+        <button class="admin-tab-btn" id="tabBtnSobreMi" onclick="switchSection('sobreMi')">
+          👤 Sobre Mí & Perfil
+        </button>
+      </nav>
 
-      <!-- BARRA DE FILTROS -->
-      <div class="toolbar-row">
-        <div class="filter-pills" id="filterPills">
-          <button class="filter-pill active" data-filter="all" onclick="filterGallery('all')">Todas</button>
-          <button class="filter-pill" data-filter="gastronomia" onclick="filterGallery('gastronomia')">Gastronomía</button>
-          <button class="filter-pill" data-filter="moda" onclick="filterGallery('moda')">Moda</button>
-          <button class="filter-pill" data-filter="paisaje" onclick="filterGallery('paisaje')">Paisaje</button>
-          <button class="filter-pill" data-filter="eventos" onclick="filterGallery('eventos')">Eventos</button>
+      <!-- SECCIÓN FOTOGRAFÍAS -->
+      <div id="sectionFotos">
+        <section class="admin-hero">
+          <div class="admin-title-area">
+            <h2>Colección de Obras</h2>
+            <p>Añade nuevas capturas, edita fichas técnicas o cambia el orden de exhibición de tu portafolio.</p>
+          </div>
+          <div>
+            <button class="btn btn-primary" onclick="openAddModal()">
+              + Añadir Fotografía
+            </button>
+          </div>
+        </section>
+
+        <!-- BARRA DE FILTROS -->
+        <div class="toolbar-row">
+          <div class="filter-pills" id="filterPills">
+            <button class="filter-pill active" data-filter="all" onclick="filterGallery('all')">Todas</button>
+            <button class="filter-pill" data-filter="gastronomia" onclick="filterGallery('gastronomia')">Gastronomía</button>
+            <button class="filter-pill" data-filter="moda" onclick="filterGallery('moda')">Moda</button>
+            <button class="filter-pill" data-filter="paisaje" onclick="filterGallery('paisaje')">Paisaje</button>
+            <button class="filter-pill" data-filter="eventos" onclick="filterGallery('eventos')">Eventos</button>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);" id="counterLabel">
+            Cargando fotos...
+          </div>
         </div>
-        <div style="font-size: 0.8rem; color: var(--text-muted);" id="counterLabel">
-          Cargando fotos...
+
+        <!-- GRID DE FOTOS -->
+        <div class="photos-grid" id="photosGrid">
+          <!-- Se llena dinámicamente por JavaScript -->
         </div>
       </div>
 
-      <!-- GRID DE FOTOS -->
-      <div class="photos-grid" id="photosGrid">
-        <!-- Se llena dinámicamente por JavaScript -->
+      <!-- SECCIÓN VIDEOS -->
+      <div id="sectionVideos" style="display: none;">
+        <section class="admin-hero">
+          <div class="admin-title-area">
+            <h2>Producción Audiovisual</h2>
+            <p>Gestiona los videos y reels cinematográficos. Soporta enlaces directos MP4 o links de YouTube y Vimeo.</p>
+          </div>
+          <div>
+            <button class="btn btn-primary" onclick="openAddVideoModal()">
+              + Añadir Video
+            </button>
+          </div>
+        </section>
+
+        <!-- GRID DE VIDEOS -->
+        <div class="videos-admin-grid" id="videosAdminGrid">
+          <!-- Se llena dinámicamente por JavaScript -->
+        </div>
+      </div>
+
+      <!-- SECCIÓN SOBRE MÍ -->
+      <div id="sectionSobreMi" style="display: none;">
+        <section class="admin-hero">
+          <div class="admin-title-area">
+            <h2>Biografía & Manifiesto</h2>
+            <p>Edita tu frase destacada, fotografía de perfil, párrafos de bio, cifras de experiencia y marcas colaboradoras.</p>
+          </div>
+        </section>
+
+        <div class="sobremi-card">
+          <div class="form-group">
+            <label class="form-label">Frase / Manifiesto Destacado</label>
+            <input type="text" id="smFrase" class="form-input" style="width: 100%;" oninput="markSobreMiChanged()" placeholder='"La luz no solo ilumina un espacio, revela la emoción contenida en él."'>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Foto de Perfil (URL o Imagen)</label>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+              <img id="smFotoPreview" src="" alt="Perfil" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);">
+              <div style="flex: 1;">
+                <input type="text" id="smFoto" class="form-input" style="width: 100%; margin-bottom: 0.35rem;" oninput="updateSmFotoPreview(this.value)" placeholder="https://... o ruta de foto">
+                <input type="file" id="smFotoFile" accept="image/*" onchange="handleSmFotoFile(event)" style="font-size: 0.75rem;">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Párrafo de Introducción (Lead)</label>
+            <textarea id="smLead" class="form-input" rows="2" style="width: 100%; font-family: inherit; resize: vertical;" oninput="markSobreMiChanged()" placeholder="Soy Federico Raposo, fotógrafo y realizador audiovisual..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Biografía Completa (Separa párrafos con doble salto de línea)</label>
+            <textarea id="smBio" class="form-input" rows="6" style="width: 100%; font-family: inherit; resize: vertical;" oninput="markSobreMiChanged()" placeholder="Durante los últimos 8 años he enfocado mi lente..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Estadísticas Principales</label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+              <div style="background: var(--bg-alt); padding: 0.75rem; border-radius: 8px;">
+                <input type="text" id="smStatVal0" class="form-input" style="width: 100%; font-weight: 600; margin-bottom: 0.25rem;" oninput="markSobreMiChanged()" placeholder="+8">
+                <input type="text" id="smStatLbl0" class="form-input" style="width: 100%; font-size: 0.8rem;" oninput="markSobreMiChanged()" placeholder="Años de experiencia">
+              </div>
+              <div style="background: var(--bg-alt); padding: 0.75rem; border-radius: 8px;">
+                <input type="text" id="smStatVal1" class="form-input" style="width: 100%; font-weight: 600; margin-bottom: 0.25rem;" oninput="markSobreMiChanged()" placeholder="140+">
+                <input type="text" id="smStatLbl1" class="form-input" style="width: 100%; font-size: 0.8rem;" oninput="markSobreMiChanged()" placeholder="Proyectos de autor y marcas">
+              </div>
+              <div style="background: var(--bg-alt); padding: 0.75rem; border-radius: 8px;">
+                <input type="text" id="smStatVal2" class="form-input" style="width: 100%; font-weight: 600; margin-bottom: 0.25rem;" oninput="markSobreMiChanged()" placeholder="4K / 5.1K">
+                <input type="text" id="smStatLbl2" class="form-input" style="width: 100%; font-size: 0.8rem;" oninput="markSobreMiChanged()" placeholder="Estándar de captura y cine">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Marcas y Publicaciones Colaboradoras (Separadas por comas)</label>
+            <input type="text" id="smClientes" class="form-input" style="width: 100%;" oninput="markSobreMiChanged()" placeholder="REVISTA CULINARIA, MODA & ESTILO, GLOBAL SUMMIT, BODEGAS DEL SUR, HOTEL BOUTIQUE ALTA">
+          </div>
+        </div>
       </div>
     </main>
 
@@ -173,6 +270,49 @@
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
         <button class="btn btn-primary" onclick="savePhotoForm()">Guardar Fotografía</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EDITAR / AGREGAR VIDEO -->
+  <div class="modal-overlay" id="videoModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="videoModalTitle">Añadir Video</h3>
+        <button class="modal-close" onclick="closeVideoModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group">
+          <label class="form-label">Título del Video</label>
+          <input type="text" id="videoTitleInput" class="form-input" placeholder="Ej: Fuego & Raíz: Carta de Temporada">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Etiqueta / Género</label>
+          <input type="text" id="videoTagInput" class="form-input" placeholder="Ej: Gastronomía • Comercial">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">URL del Video (MP4, YouTube o Vimeo)</label>
+          <input type="text" id="videoUrlInput" class="form-input" placeholder="https://... (mp4 directo, youtube o vimeo)">
+          <span class="form-hint">Acepta enlaces directos a archivos MP4 o links de YouTube y Vimeo</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Imagen de Portada (Póster)</label>
+          <input type="text" id="videoPosterInput" class="form-input" placeholder="https://... (URL de la imagen de portada)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Descripción / Ficha de Producción</label>
+          <textarea id="videoDescInput" class="form-input" rows="3" style="width: 100%; font-family: inherit; resize: vertical;" placeholder="Campaña audiovisual para... Filmado con Sony FX3..."></textarea>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeVideoModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveVideoForm()">Guardar Video</button>
       </div>
     </div>
   </div>

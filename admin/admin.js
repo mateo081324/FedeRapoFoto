@@ -1,12 +1,20 @@
 /* ESTADO DE LA APLICACIÓN */
 let fotos = [];
 let initialFotos = [];
+let videos = [];
+let initialVideos = [];
+let sobreMi = {};
+let initialSobreMi = {};
+
 let currentFilter = 'all';
+let currentSection = 'fotos';
 let editingIndex = -1;
+let editingVideoIndex = -1;
 let selectedCategory = 'gastronomia';
 let currentImageData = '';
 let currentUploadFile = null;
 let pendingUploads = new Map();
+let pendingSmFoto = null;
 let hasChanges = false;
 
 /* CONTROL DE ACCESO ESTRICTO */
@@ -68,7 +76,7 @@ function grantAccess(user) {
   const app = document.getElementById("adminApp");
   app.style.display = "flex";
   document.getElementById("userStatus").textContent = user.email || "Administrador";
-  loadFotosData();
+  loadData();
 }
 
 function lockAccess() {
@@ -76,30 +84,68 @@ function lockAccess() {
   document.getElementById("adminApp").style.display = "none";
   fotos = [];
   initialFotos = [];
+  videos = [];
+  initialVideos = [];
+  sobreMi = {};
+  initialSobreMi = {};
+}
+
+/* CAMBIO DE SECCIÓN (TABS) */
+function switchSection(sec) {
+  currentSection = sec;
+  document.querySelectorAll(".admin-tab-btn").forEach(btn => btn.classList.remove("active"));
+  if (sec === 'fotos') document.getElementById("tabBtnFotos")?.classList.add("active");
+  if (sec === 'videos') document.getElementById("tabBtnVideos")?.classList.add("active");
+  if (sec === 'sobreMi') document.getElementById("tabBtnSobreMi")?.classList.add("active");
+
+  document.getElementById("sectionFotos").style.display = sec === 'fotos' ? 'block' : 'none';
+  document.getElementById("sectionVideos").style.display = sec === 'videos' ? 'block' : 'none';
+  document.getElementById("sectionSobreMi").style.display = sec === 'sobreMi' ? 'block' : 'none';
 }
 
 /* CARGA DE DATOS */
-async function loadFotosData() {
+async function loadData() {
   try {
     const res = await fetch("../data/galeria.json?t=" + Date.now());
     if (res.ok) {
       const data = await res.json();
       fotos = data.fotos || [];
       initialFotos = JSON.parse(JSON.stringify(fotos));
+
+      videos = data.videos || [];
+      initialVideos = JSON.parse(JSON.stringify(videos));
+
+      sobreMi = data.sobreMi || {};
+      initialSobreMi = JSON.parse(JSON.stringify(sobreMi));
+
       renderGrid();
+      renderVideos();
+      renderSobreMi();
+      updateBadges();
     }
   } catch (err) {
     console.warn("Carga desde galeria.json falló:", err);
   }
 }
 
-/* RENDERIZADO DEL GRID */
+function updateBadges() {
+  const badgeFotos = document.getElementById("countFotosBadge");
+  if (badgeFotos) badgeFotos.textContent = fotos.length;
+
+  const badgeVideos = document.getElementById("countVideosBadge");
+  if (badgeVideos) badgeVideos.textContent = videos.length;
+}
+
+/* --------------------------------------------------------------------------
+   GESTIÓN DE FOTOGRAFÍAS
+   -------------------------------------------------------------------------- */
 function renderGrid() {
   const grid = document.getElementById("photosGrid");
   const counter = document.getElementById("counterLabel");
   const filtered = currentFilter === 'all' ? fotos : fotos.filter(f => f.categoria === currentFilter);
 
   counter.textContent = `${fotos.length} fotografías en total (${filtered.length} visibles)`;
+  updateBadges();
 
   if (filtered.length === 0) {
     grid.innerHTML = `
@@ -152,7 +198,6 @@ function renderGrid() {
   checkChanges();
 }
 
-/* FILTROS */
 function filterGallery(cat) {
   currentFilter = cat;
   document.querySelectorAll(".filter-pill").forEach(p => {
@@ -161,7 +206,6 @@ function filterGallery(cat) {
   renderGrid();
 }
 
-/* REORDENAR FOTO */
 function movePhoto(index, delta) {
   const newIndex = index + delta;
   if (newIndex < 0 || newIndex >= fotos.length) return;
@@ -170,7 +214,6 @@ function movePhoto(index, delta) {
   renderGrid();
 }
 
-/* ELIMINAR FOTO */
 function deletePhoto(index) {
   const item = fotos[index];
   if (confirm(`¿Estás seguro de retirar la fotografía "${item.titulo}" del catálogo?`)) {
@@ -180,7 +223,6 @@ function deletePhoto(index) {
   }
 }
 
-/* MODAL AGREGAR / EDITAR */
 function openAddModal() {
   editingIndex = -1;
   document.getElementById("modalTitle").textContent = "Añadir Fotografía";
@@ -293,18 +335,225 @@ function savePhotoForm() {
   renderGrid();
 }
 
-/* COMPROBAR SI HAY CAMBIOS */
+/* --------------------------------------------------------------------------
+   GESTIÓN DE VIDEOS
+   -------------------------------------------------------------------------- */
+function renderVideos() {
+  const grid = document.getElementById("videosAdminGrid");
+  if (!grid) return;
+  updateBadges();
+
+  if (!videos || videos.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1; padding: 4rem 2rem; text-align: center; color: var(--text-muted); background: var(--bg-card); border: 1px dashed var(--border); border-radius: var(--radius);">
+        <p style="font-size: 1.1rem; margin-bottom: 0.5rem; font-family: var(--font-serif);">No hay videos registrados</p>
+        <p style="font-size: 0.85rem;">Haz clic en <strong>+ Añadir Video</strong> para agregar el primero.</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = videos.map((v, idx) => {
+    const isFirst = idx === 0;
+    const isLast = idx === videos.length - 1;
+    const poster = v.poster || "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80";
+
+    return `
+      <div class="video-admin-card" data-video-index="${idx}">
+        <div class="video-admin-thumb-wrapper">
+          <img src="${poster}" alt="${v.titulo}" class="video-admin-thumb" loading="lazy">
+          <div class="video-play-indicator">&#9658;</div>
+        </div>
+        <div class="video-admin-info">
+          <span class="video-admin-tag">${v.tag || 'Video'}</span>
+          <h4 class="video-admin-title">${v.titulo}</h4>
+          <p class="video-admin-desc">${v.descripcion || ''}</p>
+          <div class="photo-card-actions" style="margin-top: 0.75rem;">
+            <div class="order-btns">
+              <button class="btn-icon" title="Mover antes" onclick="moveVideo(${idx}, -1)" ${isFirst ? 'disabled' : ''}>&uarr;</button>
+              <button class="btn-icon" title="Mover después" onclick="moveVideo(${idx}, 1)" ${isLast ? 'disabled' : ''}>&darr;</button>
+            </div>
+            <div style="display: flex; gap: 0.35rem;">
+              <button class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="openEditVideoModal(${idx})">
+                Editar
+              </button>
+              <button class="btn-danger-outline" title="Eliminar video" onclick="deleteVideo(${idx})">
+                &times;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  checkChanges();
+}
+
+function moveVideo(index, delta) {
+  const newIndex = index + delta;
+  if (newIndex < 0 || newIndex >= videos.length) return;
+  const [item] = videos.splice(index, 1);
+  videos.splice(newIndex, 0, item);
+  renderVideos();
+}
+
+function deleteVideo(index) {
+  const item = videos[index];
+  if (confirm(`¿Estás seguro de eliminar el video "${item.titulo}"?`)) {
+    videos.splice(index, 1);
+    renderVideos();
+    showToast("Video retirado del catálogo");
+  }
+}
+
+function openAddVideoModal() {
+  editingVideoIndex = -1;
+  document.getElementById("videoModalTitle").textContent = "Añadir Video";
+  document.getElementById("videoTitleInput").value = "";
+  document.getElementById("videoTagInput").value = "";
+  document.getElementById("videoUrlInput").value = "";
+  document.getElementById("videoPosterInput").value = "";
+  document.getElementById("videoDescInput").value = "";
+  document.getElementById("videoModal").classList.add("active");
+}
+
+function openEditVideoModal(index) {
+  editingVideoIndex = index;
+  const item = videos[index];
+  document.getElementById("videoModalTitle").textContent = "Editar Video";
+  document.getElementById("videoTitleInput").value = item.titulo || "";
+  document.getElementById("videoTagInput").value = item.tag || "";
+  document.getElementById("videoUrlInput").value = item.video || "";
+  document.getElementById("videoPosterInput").value = item.poster || "";
+  document.getElementById("videoDescInput").value = item.descripcion || "";
+  document.getElementById("videoModal").classList.add("active");
+}
+
+function closeVideoModal() {
+  document.getElementById("videoModal").classList.remove("active");
+}
+
+function saveVideoForm() {
+  const titulo = document.getElementById("videoTitleInput").value.trim() || "Video sin título";
+  const tag = document.getElementById("videoTagInput").value.trim();
+  const video = document.getElementById("videoUrlInput").value.trim();
+  const poster = document.getElementById("videoPosterInput").value.trim();
+  const descripcion = document.getElementById("videoDescInput").value.trim();
+
+  if (!video) {
+    alert("Por favor ingresa la URL del video (MP4, YouTube o Vimeo).");
+    return;
+  }
+
+  const videoObj = {
+    titulo,
+    tag: tag || "Producción Audiovisual",
+    video,
+    poster: poster || "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80",
+    descripcion
+  };
+
+  if (editingVideoIndex >= 0) {
+    videos[editingVideoIndex] = videoObj;
+    showToast("Video actualizado");
+  } else {
+    videos.unshift(videoObj);
+    showToast("Video agregado a la colección");
+  }
+
+  closeVideoModal();
+  renderVideos();
+}
+
+/* --------------------------------------------------------------------------
+   GESTIÓN DE SOBRE MÍ
+   -------------------------------------------------------------------------- */
+function renderSobreMi() {
+  if (!sobreMi) return;
+  document.getElementById("smFrase").value = sobreMi.frase || "";
+  document.getElementById("smFoto").value = sobreMi.foto || "";
+  updateSmFotoPreview(sobreMi.foto || "");
+  document.getElementById("smLead").value = sobreMi.lead || "";
+  document.getElementById("smBio").value = sobreMi.bio || "";
+
+  if (Array.isArray(sobreMi.stats)) {
+    if (sobreMi.stats[0]) {
+      document.getElementById("smStatVal0").value = sobreMi.stats[0].valor || "";
+      document.getElementById("smStatLbl0").value = sobreMi.stats[0].label || "";
+    }
+    if (sobreMi.stats[1]) {
+      document.getElementById("smStatVal1").value = sobreMi.stats[1].valor || "";
+      document.getElementById("smStatLbl1").value = sobreMi.stats[1].label || "";
+    }
+    if (sobreMi.stats[2]) {
+      document.getElementById("smStatVal2").value = sobreMi.stats[2].valor || "";
+      document.getElementById("smStatLbl2").value = sobreMi.stats[2].label || "";
+    }
+  }
+
+  document.getElementById("smClientes").value = sobreMi.clientes || "";
+}
+
+function updateSmFotoPreview(url) {
+  const prev = document.getElementById("smFotoPreview");
+  if (prev) {
+    prev.src = url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80";
+  }
+}
+
+function handleSmFotoFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const base64 = event.target.result;
+    pendingSmFoto = { file, base64 };
+    updateSmFotoPreview(base64);
+    markSobreMiChanged();
+  };
+  reader.readAsDataURL(file);
+}
+
+function markSobreMiChanged() {
+  sobreMi = {
+    frase: document.getElementById("smFrase").value,
+    foto: pendingSmFoto ? pendingSmFoto.base64 : document.getElementById("smFoto").value,
+    lead: document.getElementById("smLead").value,
+    bio: document.getElementById("smBio").value,
+    stats: [
+      { valor: document.getElementById("smStatVal0").value, label: document.getElementById("smStatLbl0").value },
+      { valor: document.getElementById("smStatVal1").value, label: document.getElementById("smStatLbl1").value },
+      { valor: document.getElementById("smStatVal2").value, label: document.getElementById("smStatLbl2").value }
+    ],
+    clientes: document.getElementById("smClientes").value
+  };
+  checkChanges();
+}
+
+/* --------------------------------------------------------------------------
+   COMPROBAR SI HAY CAMBIOS & PUBLICAR
+   -------------------------------------------------------------------------- */
 function checkChanges() {
   const saveBar = document.getElementById("saveBar");
-  hasChanges = JSON.stringify(fotos) !== JSON.stringify(initialFotos);
+  const stateCurrent = JSON.stringify({ fotos, videos, sobreMi });
+  const stateInitial = JSON.stringify({ fotos: initialFotos, videos: initialVideos, sobreMi: initialSobreMi });
+  hasChanges = stateCurrent !== stateInitial || pendingUploads.size > 0 || pendingSmFoto !== null;
   saveBar.classList.toggle("visible", hasChanges);
 }
 
 function revertChanges() {
   if (confirm("¿Descartar todos los cambios no publicados?")) {
     fotos = JSON.parse(JSON.stringify(initialFotos));
+    videos = JSON.parse(JSON.stringify(initialVideos));
+    sobreMi = JSON.parse(JSON.stringify(initialSobreMi));
     pendingUploads.clear();
+    pendingSmFoto = null;
     renderGrid();
+    renderVideos();
+    renderSobreMi();
+    checkChanges();
     showToast("Cambios descartados");
   }
 }
@@ -328,7 +577,7 @@ async function publishChanges() {
       "Content-Type": "application/json"
     };
 
-    // 1. Subir imágenes nuevas como archivos en assets/fotos
+    // 1. Subir imágenes nuevas de fotos
     for (const [idx, item] of pendingUploads.entries()) {
       const cleanName = `${Date.now()}-${item.file.name.replace(/[^a-zA-Z0-9.-]/g, "_").toLowerCase()}`;
       const base64Data = item.base64.split(",")[1];
@@ -349,7 +598,28 @@ async function publishChanges() {
     }
     pendingUploads.clear();
 
-    // 2. Obtener SHA actual de galeria.json
+    // 2. Subir foto de perfil si se cargó un archivo nuevo
+    if (pendingSmFoto) {
+      const cleanName = `perfil-${Date.now()}-${pendingSmFoto.file.name.replace(/[^a-zA-Z0-9.-]/g, "_").toLowerCase()}`;
+      const base64Data = pendingSmFoto.base64.split(",")[1];
+
+      const uploadRes = await fetch(`/.netlify/git/github/contents/assets/fotos/${cleanName}`, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({
+          message: `Subida foto perfil: ${cleanName}`,
+          content: base64Data,
+          branch: "main"
+        })
+      });
+
+      if (uploadRes.ok) {
+        sobreMi.foto = `assets/fotos/${cleanName}`;
+      }
+      pendingSmFoto = null;
+    }
+
+    // 3. Obtener SHA actual de galeria.json
     const getShaRes = await fetch("/.netlify/git/github/contents/data/galeria.json", { headers });
     let currentSha = null;
     if (getShaRes.ok) {
@@ -357,12 +627,13 @@ async function publishChanges() {
       currentSha = shaData.sha;
     }
 
-    // 3. Commit del JSON
-    const jsonString = JSON.stringify({ fotos }, null, 2);
+    // 4. Commit del JSON completo con fotos, videos y sobreMi
+    const payload = { fotos, videos, sobreMi };
+    const jsonString = JSON.stringify(payload, null, 2);
     const encodedContent = btoa(unescape(encodeURIComponent(jsonString)));
 
     const commitBody = {
-      message: `Actualizar galería de fotos (${fotos.length} piezas)`,
+      message: `Actualizar catálogo web: ${fotos.length} fotos, ${videos.length} videos y biografía`,
       content: encodedContent,
       branch: "main"
     };
@@ -379,8 +650,10 @@ async function publishChanges() {
     }
 
     initialFotos = JSON.parse(JSON.stringify(fotos));
+    initialVideos = JSON.parse(JSON.stringify(videos));
+    initialSobreMi = JSON.parse(JSON.stringify(sobreMi));
     checkChanges();
-    showToast("✓ ¡Galería publicada con éxito! La web se actualizará en unos instantes.");
+    showToast("✓ ¡Cambios publicados con éxito! La web se actualizará en unos instantes.");
   } catch (err) {
     console.error(err);
     alert("Error de publicación: " + err.message);

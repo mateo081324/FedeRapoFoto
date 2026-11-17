@@ -27,12 +27,10 @@ Con este sistema, **el fotógrafo gestiona sus fotos de forma 100% visual desde 
 1. El fotógrafo recibe un correo con el asunto *"You have been invited"*.
 2. Hace clic en el enlace, define su contraseña personal.
 3. Entra a: `https://tudominio.com/admin/` (o hace clic en el enlace discreto *"Gestión"* al pie de la página).
-4. **En el panel podrá:**
-   - **Subir fotos nuevas:** Arrastra la imagen desde su computadora o celular.
-   - **Modificar datos:** Cambiar título, categoría (Gastronomía, Moda, Paisaje, Eventos) y cámara/lente.
-   - **Elegir destacadas:** Marcar la casilla *"¿Mostrar en Portada?"* para las fotos que quiere que aparezcan en el Inicio.
-   - **Reordenar:** Arrastrar las fotos hacia arriba o abajo para cambiar el orden en que se muestran.
-   - **Eliminar fotos** que ya no quiera mostrar.
-   - Presionar **"Guardar"** y los cambios se publican solos en la web en cuestión de segundos.
+4. **En el panel podrá gestionar todo desde 3 pestañas:**
+   - **📷 Fotografías:** Subir fotos nuevas (arrastrar o URL), editar ficha técnica/equipo, marcar para Portada, reordenar y eliminar.
+   - **🎬 Videos:** Agregar enlaces de video (MP4, YouTube o Vimeo), definir título, género/etiqueta, imagen de póster y descripción del rodaje.
+   - **👤 Sobre Mí:** Actualizar su frase/manifiesto, foto de perfil, párrafos biográficos, métricas de experiencia y marcas/clientes.
+   - Presionar **"Publicar en la Web"** y los cambios se sincronizan en todo el sitio en segundos.
 
 Listo: una vez configurado esto, **te olvidás de la página por completo**.

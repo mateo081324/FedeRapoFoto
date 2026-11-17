@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initLightbox();
   initContactForm();
   loadDynamicGallery();
+  loadDynamicVideos();
+  loadDynamicAbout();
   runSelfCheck();
 });
 
@@ -154,6 +156,119 @@ async function loadDynamicGallery() {
     }
   } catch (_) {
     // shortcut: Fallback silencioso a fotos estáticas HTML si falla fetch (ej. protocolo file://)
+  }
+}
+
+/* --------------------------------------------------------------------------
+   CARGA DINÁMICA DE VIDEOS
+   -------------------------------------------------------------------------- */
+async function loadDynamicVideos() {
+  const grid = document.querySelector(".videos-grid");
+  if (!grid) return;
+
+  try {
+    const res = await fetch("data/galeria.json");
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data || !Array.isArray(data.videos) || !data.videos.length) return;
+
+    grid.innerHTML = data.videos.map((v) => {
+      let mediaHtml = "";
+      const isEmbed = v.video && (v.video.includes("youtube.com") || v.video.includes("youtu.be") || v.video.includes("vimeo.com"));
+      if (isEmbed) {
+        let embedUrl = v.video;
+        if (v.video.includes("youtube.com/watch?v=")) {
+          embedUrl = v.video.replace("watch?v=", "embed/");
+        } else if (v.video.includes("youtu.be/")) {
+          embedUrl = v.video.replace("youtu.be/", "www.youtube.com/embed/");
+        } else if (v.video.includes("vimeo.com/") && !v.video.includes("player.vimeo.com")) {
+          embedUrl = v.video.replace("vimeo.com/", "player.vimeo.com/video/");
+        }
+        mediaHtml = `<iframe src="${embedUrl}" title="${v.titulo}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; aspect-ratio:16/9; border:none; display:block;"></iframe>`;
+      } else {
+        mediaHtml = `
+          <video controls playsinline preload="metadata" poster="${v.poster || ''}">
+            <source src="${v.video}" type="video/mp4">
+            Tu navegador no soporta reproducción de video.
+          </video>
+        `;
+      }
+
+      return `
+        <article class="video-card">
+          <div class="video-wrapper">
+            ${mediaHtml}
+          </div>
+          <div class="video-meta">
+            ${v.tag ? `<span class="video-tag">${v.tag}</span>` : ""}
+            <h3>${v.titulo}</h3>
+            ${v.descripcion ? `<p>${v.descripcion}</p>` : ""}
+          </div>
+        </article>
+      `;
+    }).join("");
+  } catch (_) {
+    // shortcut: Fallback silencioso a videos estáticos HTML
+  }
+}
+
+/* --------------------------------------------------------------------------
+   CARGA DINÁMICA DE SOBRE MÍ
+   -------------------------------------------------------------------------- */
+async function loadDynamicAbout() {
+  const aboutSection = document.querySelector(".about-grid");
+  if (!aboutSection) return;
+
+  try {
+    const res = await fetch("data/galeria.json");
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data || !data.sobreMi) return;
+    const sm = data.sobreMi;
+
+    const imgEl = aboutSection.querySelector(".about-photo img");
+    if (imgEl && sm.foto) imgEl.src = sm.foto;
+
+    const quoteEl = aboutSection.querySelector(".about-content h2");
+    if (quoteEl && sm.frase) quoteEl.textContent = sm.frase;
+
+    const leadEl = aboutSection.querySelector(".about-lead");
+    if (leadEl && sm.lead) leadEl.textContent = sm.lead;
+
+    if (sm.bio) {
+      const oldParagraphs = aboutSection.querySelectorAll(".about-content > p:not(.about-lead):not([style*='uppercase'])");
+      oldParagraphs.forEach((p) => p.remove());
+
+      const paragraphs = sm.bio.split("\n\n").filter((p) => p.trim());
+      const statsEl = aboutSection.querySelector(".about-stats");
+      paragraphs.forEach((text) => {
+        const p = document.createElement("p");
+        p.textContent = text.trim();
+        aboutSection.querySelector(".about-content").insertBefore(p, statsEl);
+      });
+    }
+
+    if (Array.isArray(sm.stats) && sm.stats.length) {
+      const statsContainer = aboutSection.querySelector(".about-stats");
+      if (statsContainer) {
+        statsContainer.innerHTML = sm.stats.map((s) => `
+          <div class="stat-item">
+            <h3>${s.valor}</h3>
+            <p>${s.label}</p>
+          </div>
+        `).join("");
+      }
+    }
+
+    if (sm.clientes) {
+      const clientList = document.querySelector(".clients-brand-list") || document.querySelector("section[style*='border-top'] div");
+      if (clientList) {
+        const items = typeof sm.clientes === "string" ? sm.clientes.split(",").map((c) => c.trim()) : sm.clientes;
+        clientList.innerHTML = items.map((c) => `<span>${c}</span>`).join("");
+      }
+    }
+  } catch (_) {
+    // shortcut: Fallback silencioso a contenido estático HTML
   }
 }
 
