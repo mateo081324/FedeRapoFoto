@@ -1,0 +1,6 @@
+# Claude local settings
+.claude/
+
+# SO y temporales
+Thumbs.db
+.DS_Store

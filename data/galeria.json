@@ -1,0 +1,88 @@
+{
+  "fotos": [
+    {
+      "titulo": "Cocina Botánica",
+      "categoria": "gastronomia",
+      "imagen": "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 90mm Macro f/2.8",
+      "destacada": true
+    },
+    {
+      "titulo": "Pasta Artesanal al Fuego",
+      "categoria": "gastronomia",
+      "imagen": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 50mm f/1.4",
+      "destacada": true
+    },
+    {
+      "titulo": "Cata & Maridaje",
+      "categoria": "gastronomia",
+      "imagen": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 35mm f/1.8",
+      "destacada": false
+    },
+    {
+      "titulo": "Colección Estival",
+      "categoria": "moda",
+      "imagen": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 85mm f/1.4",
+      "destacada": true
+    },
+    {
+      "titulo": "Sombras & Seda",
+      "categoria": "moda",
+      "imagen": "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 85mm f/1.4",
+      "destacada": false
+    },
+    {
+      "titulo": "Detalles Minimalistas",
+      "categoria": "moda",
+      "imagen": "https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 90mm f/2.8",
+      "destacada": false
+    },
+    {
+      "titulo": "Niebla en Yosemite",
+      "categoria": "paisaje",
+      "imagen": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 16-35mm f/2.8",
+      "destacada": true
+    },
+    {
+      "titulo": "Silencio en la Cumbre",
+      "categoria": "paisaje",
+      "imagen": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 70-200mm f/2.8",
+      "destacada": false
+    },
+    {
+      "titulo": "Ruta Húmeda",
+      "categoria": "paisaje",
+      "imagen": "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 24-70mm f/2.8",
+      "destacada": false
+    },
+    {
+      "titulo": "Cumbre de Innovación 2026",
+      "categoria": "eventos",
+      "imagen": "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 70-200mm f/2.8",
+      "destacada": true
+    },
+    {
+      "titulo": "Encuentro de Creadores",
+      "categoria": "eventos",
+      "imagen": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 24-70mm f/2.8",
+      "destacada": false
+    },
+    {
+      "titulo": "Noche de Arte & Arquitectura",
+      "categoria": "eventos",
+      "imagen": "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=800&q=80",
+      "equipo": "Sony A7 IV • 35mm f/1.8",
+      "destacada": false
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto & Reservas | Federico Raposo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        Federico Raposo
+        <span>Fotografía & Video</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="galeria.html">Galería</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="sobre-mi.html">Sobre Mí</a></li>
+        <li><a href="equipo.html">Equipo</a></li>
+        <li><a href="contacto.html" class="active">Contacto</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <p style="text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.75rem; color: var(--text-muted);">Iniciemos una conversación</p>
+      <h1>Contacto & Cotizaciones</h1>
+      <p>Cuéntame sobre tu marca, restaurante, producción de moda o evento. Responderé en menos de 24 horas hábiles.</p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- INFORMACIÓN DIRECTA -->
+      <div class="contact-info">
+        <h2>Hablemos de tu próximo proyecto</h2>
+        <p>
+          Cada proyecto requiere un enfoque técnico y una propuesta estética particular. Si prefieres un contacto directo e inmediato, puedes escribirme por WhatsApp o correo.
+        </p>
+
+        <ul class="contact-details">
+          <li>
+            <strong>Email Directo</strong>
+            <a href="mailto:contacto@julianrocha.com">federaposo@gmail.com</a>
+          </li>
+          <li>
+            <strong>WhatsApp / Teléfono</strong>
+            <a href="https://wa.me/5491100000000" target="_blank" rel="noopener">+54 (911) 0000-0000</a>
+          </li>
+          <li>
+            <strong>Ubicación & Cobertura</strong>
+            <span>Ubicado en Rojas, Buenos Aires • Disponible para traslados en la zona</span>
+          </li>
+          <li>
+            <strong>Horario de atención</strong>
+            <span>Lunes a Viernes de 09:00 a 19:00 hs</span>
+          </li>
+        </ul>
+
+        <!-- PREGUNTAS FRECUENTES BREVES -->
+        <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+          <h4 style="font-family: var(--font-serif); font-size: 1.15rem; margin-bottom: 0.75rem;">Preguntas Frecuentes</h4>
+          <details style="margin-bottom: 0.75rem; cursor: pointer;">
+            <summary style="font-weight: 500; font-size: 0.85rem;">¿Cuánto demora la entrega del material?</summary>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem;">Para fotografía gastronómica y de producto: 5 a 7 días hábiles. Para producciones de video y aftermovies: 10 a 14 días con dos rondas de revisión incluidas.</p>
+          </details>
+          <details style="cursor: pointer;">
+            <summary style="font-weight: 500; font-size: 0.85rem;">¿Realizas bodas o cumpleaños?</summary>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem;">No realizo eventos sociales privados como bodas o fiestas de cumpleaños. Mi enfoque está 100% volcado en proyectos comerciales, editoriales, culturales y de marca.</p>
+          </details>
+        </div>
+      </div>
+
+      <!-- FORMULARIO -->
+      <div class="contact-form">
+        <form id="contact-form">
+          <div class="form-group">
+            <label for="name">Nombre y Apellido / Empresa *</label>
+            <input type="text" id="name" class="form-control" placeholder="Ej. Camila Méndez o Restaurante Aura" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Correo Electrónico *</label>
+            <input type="email" id="email" class="form-control" placeholder="nombre@ejemplo.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Tipo de Servicio *</label>
+            <select id="category" class="form-control" required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="gastronomia">Fotografía Gastronómica & Menú</option>
+              <option value="moda">Editorial de Moda & Lookbook</option>
+              <option value="paisaje">Paisaje, Turismo & Expedición</option>
+              <option value="eventos">Evento Corporativo o Cultural</option>
+              <option value="video">Producción Audiovisual / Video Reel</option>
+              <option value="otro">Otro tipo de producción</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="date">Fecha estimada / Locación</label>
+            <input type="text" id="date" class="form-control" placeholder="Ej. Mediados del próximo mes en Palermo">
+          </div>
+
+          <div class="form-group">
+            <label for="message">Detalles del Proyecto *</label>
+            <textarea id="message" class="form-control" placeholder="Cuéntame sobre la idea, cantidad de platos o modelos, usos previstos (redes, web, imprenta)..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn" style="width: 100%;">Enviar Consulta &rarr;</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h4>Federico Raposo</h4>
+        <p>Fotógrafo & Filmmaker independiente</p>
+      </div>
+      <div class="footer-social">
+        <a href="#" target="_blank" rel="noopener">Instagram</a>
+        <a href="#" target="_blank" rel="noopener">Behance</a>
+        <a href="#" target="_blank" rel="noopener">Vimeo</a>
+        <a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <p class="footer-copy">&copy; 2026 Federico Raposo. Todos los derechos reservados. Diseño minimalista claro.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

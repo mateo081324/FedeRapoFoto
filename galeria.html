@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galería de Fotos | Federico Raposo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        Federico Raposo
+        <span>Fotografía & Video</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="galeria.html" class="active">Galería</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="sobre-mi.html">Sobre Mí</a></li>
+        <li><a href="equipo.html">Equipo</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <p style="text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.75rem; color: var(--text-muted);">Colección Fotográfica</p>
+      <h1>Galería de Obras</h1>
+      <p>Selección curada en gastronomía de alta gama, sesiones editoriales de moda, naturaleza virgen y eventos de marca o culturales.</p>
+    </div>
+
+    <!-- BOTONES DE FILTRO -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="gastronomia">Gastronomía</button>
+      <button class="filter-btn" data-filter="moda">Moda</button>
+      <button class="filter-btn" data-filter="paisaje">Paisaje</button>
+      <button class="filter-btn" data-filter="eventos">Eventos</button>
+    </div>
+
+    <!-- GRID DE FOTOS -->
+    <div class="gallery-grid">
+      <!-- GASTRONOMÍA -->
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="gastronomia">
+        <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" alt="Ensalada Gourmet y Texturas" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Gastronomía</span>
+          <h4>Cocina Botánica</h4>
+          <p class="gear-tag">Sony A7 IV • 90mm Macro f/2.8</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="gastronomia">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Plato de autor en restaurante" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Gastronomía</span>
+          <h4>Pasta Artesanal al Fuego</h4>
+          <p class="gear-tag">Sony A7 IV • 50mm f/1.4</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="gastronomia">
+        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80" alt="Cata de vinos y destilados" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Gastronomía</span>
+          <h4>Cata & Maridaje</h4>
+          <p class="gear-tag">Sony A7 IV • 35mm f/1.8</p>
+        </div>
+      </div>
+
+      <!-- MODA -->
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="moda">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80" alt="Editorial Moda Urbana" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Moda</span>
+          <h4>Colección Estival</h4>
+          <p class="gear-tag">Sony A7 IV • 85mm f/1.4</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="moda">
+        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80" alt="Retrato Alta Costura" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Moda</span>
+          <h4>Sombras & Seda</h4>
+          <p class="gear-tag">Sony A7 IV • 85mm f/1.4</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="moda">
+        <img src="https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?auto=format&fit=crop&w=800&q=80" alt="Accesorios y Joyería Editorial" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Moda</span>
+          <h4>Detalles Minimalistas</h4>
+          <p class="gear-tag">Sony A7 IV • 90mm f/2.8</p>
+        </div>
+      </div>
+
+      <!-- PAISAJE -->
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="paisaje">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Cascada y Valle al amanecer" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Paisaje</span>
+          <h4>Niebla en Yosemite</h4>
+          <p class="gear-tag">Sony A7 IV • 16-35mm f/2.8</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="paisaje">
+        <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80" alt="Cordillera montañosa al atardecer" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Paisaje</span>
+          <h4>Silencio en la Cumbre</h4>
+          <p class="gear-tag">Sony A7 IV • 70-200mm f/2.8</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="paisaje">
+        <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80" alt="Puente colgante en selva verde" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Paisaje</span>
+          <h4>Ruta Húmeda</h4>
+          <p class="gear-tag">Sony A7 IV • 24-70mm f/2.8</p>
+        </div>
+      </div>
+
+      <!-- EVENTOS -->
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="eventos">
+        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Conferencia Magistral Tech" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Eventos</span>
+          <h4>Cumbre de Innovación 2026</h4>
+          <p class="gear-tag">Sony A7 IV • 70-200mm f/2.8</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="eventos">
+        <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80" alt="Conferencia y Networking" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Eventos</span>
+          <h4>Encuentro de Creadores</h4>
+          <p class="gear-tag">Sony A7 IV • 24-70mm f/2.8</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="eventos">
+        <img src="https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=800&q=80" alt="Inauguración Galería de Arte" loading="lazy">
+        <div class="gallery-overlay">
+          <span>Eventos</span>
+          <h4>Noche de Arte & Arquitectura</h4>
+          <p class="gear-tag">Sony A7 IV • 35mm f/1.8</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL LIGHTBOX -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visor de imagen">
+    <button class="lightbox-close" aria-label="Cerrar visor">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="Ampliación">
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h4>Federico Raposo</h4>
+        <p>Fotógrafo & Filmmaker independiente</p>
+      </div>
+      <div class="footer-social">
+        <a href="#" target="_blank" rel="noopener">Instagram</a>
+        <a href="#" target="_blank" rel="noopener">Behance</a>
+        <a href="#" target="_blank" rel="noopener">Vimeo</a>
+        <a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <p class="footer-copy">&copy; 2026 Federico Raposo. Todos los derechos reservados. Diseño minimalista claro. · <a href="admin/" style="opacity: 0.35; font-size: 0.75rem; color: inherit; text-decoration: none;" title="Panel de gestión de fotos">Gestión</a></p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

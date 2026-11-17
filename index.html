@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Federico Raposo | Fotógrafo Editorial & Audiovisual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        Federico Raposo
+        <span>Fotografía & Video</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Inicio</a></li>
+        <li><a href="galeria.html">Galería</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="sobre-mi.html">Sobre Mí</a></li>
+        <li><a href="equipo.html">Equipo</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO EDITORIAL SPLIT -->
+    <section class="hero-editorial-section container">
+      <div class="hero-editorial-grid">
+        <div class="hero-text">
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            Disponible para proyectos &amp; comisiones 2026
+          </div>
+          <h1 class="hero-editorial-title">
+            Luz, materia y narrativa visual
+          </h1>
+          <p class="hero-editorial-desc">
+            Fotografía editorial y dirección de cámara para gastronomía de autor, moda, espacios inmersivos y eventos culturales que requieren una firma visual rigurosa.
+          </p>
+          <div class="hero-cta-group">
+            <a href="galeria.html" class="btn">
+              Explorar Obras
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="contacto.html" class="btn btn-secondary">
+              Reservar Sesión
+            </a>
+          </div>
+          <div class="hero-stat-row">
+            <div class="stat-metric">
+              <span class="num">12+</span>
+              <span class="label">Años de oficio</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-metric">
+              <span class="num">40+</span>
+              <span class="label">Publicaciones</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-metric">
+              <span class="num">4</span>
+              <span class="label">Disciplinas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual-frame">
+          <div class="hero-visual-wrapper">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=85" alt="Obra de gastronomía editorial por Federico Raposo" loading="eager">
+            <div class="hero-floating-card">
+              <div>
+                <div class="hero-floating-title">Cocina Botánica &amp; Texturas</div>
+                <div class="hero-floating-meta">Serie Gastronomía de Autor</div>
+              </div>
+              <div class="hero-floating-meta">Milán · 50mm f/1.2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECCIÓN CURADA (INTERACTIVA EN PORTADA) -->
+    <section class="container curated-section">
+      <div class="curated-header">
+        <div>
+          <h2>Selección Curada</h2>
+          <p>Explora piezas clave sin salir de la portada. Pulsa en cualquier fotografía para abrir el visor en alta resolución.</p>
+        </div>
+        <div class="filter-bar curated-filter-bar">
+          <button class="filter-btn active" data-filter="all">Todas</button>
+          <button class="filter-btn" data-filter="gastronomia">Gastronomía</button>
+          <button class="filter-btn" data-filter="moda">Moda</button>
+          <button class="filter-btn" data-filter="paisaje">Paisaje</button>
+          <button class="filter-btn" data-filter="eventos">Eventos</button>
+        </div>
+      </div>
+
+      <div class="gallery-grid">
+        <!-- 01 GASTRONOMÍA -->
+        <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="gastronomia">
+          <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" alt="Ensalada Gourmet y Texturas" loading="lazy">
+          <div class="gallery-overlay">
+            <h3 class="gallery-title">Cocina Botánica</h3>
+            <p class="gallery-meta">Gastronomía · Sony A7R V · 50mm f/1.2 GM</p>
+          </div>
+        </div>
+
+        <!-- 02 MODA -->
+        <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="moda">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80" alt="Editorial Moda Vanguardia" loading="lazy">
+          <div class="gallery-overlay">
+            <h3 class="gallery-title">Colección de Otoño</h3>
+            <p class="gallery-meta">Moda &amp; Retrato · Hasselblad X2D · 90mm f/2.5</p>
+          </div>
+        </div>
+
+        <!-- 03 PAISAJE -->
+        <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="paisaje">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Amanecer en Valle Glaciar" loading="lazy">
+          <div class="gallery-overlay">
+            <h3 class="gallery-title">Valle Glaciar</h3>
+            <p class="gallery-meta">Paisaje Natural · Sony A7R V · 24-70mm f/2.8 GM</p>
+          </div>
+        </div>
+
+        <!-- 04 EVENTOS -->
+        <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="eventos">
+          <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Cumbre Internacional de Innovación" loading="lazy">
+          <div class="gallery-overlay">
+            <h3 class="gallery-title">Cumbre Cultural 2025</h3>
+            <p class="gallery-meta">Eventos &amp; Cultura · Sony A1 · 70-200mm f/2.8 GM II</p>
+          </div>
+        </div>
+
+        <!-- 05 GASTRONOMÍA -->
+        <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="gastronomia">
+          <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Servicio de Mesa y Emplatado" loading="lazy">
+          <div class="gallery-overlay">
+            <h3 class="gallery-title">Mesa de Degustación</h3>
+            <p class="gallery-meta">Gastronomía · Sony A7R V · 35mm f/1.4 GM</p>
+          </div>
+        </div>
+
+        <!-- 06 MODA -->
+        <div class="gallery-item" tabindex="0" role="button" aria-label="Ver fotografía ampliada" data-category="moda">
+          <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80" alt="Retrato Editorial Luz Natural" loading="lazy">
+          <div class="gallery-overlay">
+            <h3 class="gallery-title">Retrato en Contraluz</h3>
+            <p class="gallery-meta">Moda &amp; Retrato · Leica SL2 · 50mm f/1.4</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="curated-footer-cta">
+        <a href="galeria.html" class="btn btn-secondary">
+          Ver Colección Completa en Galería (24+ Fotografías) &rarr;
+        </a>
+      </div>
+    </section>
+
+    <!-- MOSAICO ASIMÉTRICO DE DISCIPLINAS (SERIES) -->
+    <section class="series-section">
+      <div class="series-header">
+        <h2>Especialidades &amp; Práctica</h2>
+        <p>Cuatro áreas de enfoque fotográfico desarrolladas con rigor técnico, iluminación medida y dirección artística especializada.</p>
+      </div>
+
+      <div class="series-mosaic">
+        <!-- GASTRONOMÍA (GRANDE) -->
+        <a href="galeria.html#gastronomia" class="mosaic-card mosaic-card--gastronomia">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80" alt="Fotografía Gastronómica" loading="lazy">
+          <div class="mosaic-info">
+            <div>
+              <h3>Gastronomía de Autor</h3>
+              <p>Texturas, técnica culinaria y luz ambiental para alta cocina</p>
+            </div>
+            <div class="mosaic-arrow" aria-hidden="true">&rarr;</div>
+          </div>
+        </a>
+
+        <!-- MODA -->
+        <a href="galeria.html#moda" class="mosaic-card mosaic-card--moda">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80" alt="Fotografía de Moda" loading="lazy">
+          <div class="mosaic-info">
+            <div>
+              <h3>Moda &amp; Editorial</h3>
+              <p>Campañas de colección, lookbooks y retrato contemporáneo</p>
+            </div>
+            <div class="mosaic-arrow" aria-hidden="true">&rarr;</div>
+          </div>
+        </a>
+
+        <!-- PAISAJE -->
+        <a href="galeria.html#paisaje" class="mosaic-card mosaic-card--paisaje">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Fotografía de Paisaje" loading="lazy">
+          <div class="mosaic-info">
+            <div>
+              <h3>Paisajes &amp; Entornos</h3>
+              <p>Inmersión en naturaleza virgen y atmósferas de luz natural</p>
+            </div>
+            <div class="mosaic-arrow" aria-hidden="true">&rarr;</div>
+          </div>
+        </a>
+
+        <!-- EVENTOS (ANCHO) -->
+        <a href="galeria.html#eventos" class="mosaic-card mosaic-card--eventos">
+          <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1000&q=80" alt="Eventos Corporativos y Culturales" loading="lazy">
+          <div class="mosaic-info">
+            <div>
+              <h3>Cultura &amp; Grandes Eventos</h3>
+              <p>Cobertura cinematográfica para festivales, simposios y marcas</p>
+            </div>
+            <div class="mosaic-arrow" aria-hidden="true">&rarr;</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- MANIFIESTO EDITORIAL -->
+    <section class="manifesto-section">
+      <div class="manifesto-content">
+        <blockquote class="manifesto-quote">
+          "Cada imagen debe contar una historia sensorial: la calidez de un plato recién servido, la caída exacta de una tela o la inmensidad silenciosa de un horizonte."
+        </blockquote>
+        <p class="manifesto-author">Federico Raposo — Fotógrafo &amp; Filmmaker Independiente</p>
+        <a href="sobre-mi.html" class="btn btn-secondary">Conocer mi trayectoria &rarr;</a>
+      </div>
+    </section>
+
+    <!-- STRIP DE CONTACTO RÁPIDO (USER COMFORT) -->
+    <section class="contact-fast-strip">
+      <div class="contact-fast-container">
+        <div class="contact-fast-text">
+          <h2>¿Tienes una sesión o campaña en mente?</h2>
+          <p>Conversemos sobre fechas disponibles, cotizaciones a medida y dirección visual para tu próxima producción editorial o comercial.</p>
+        </div>
+        <div class="contact-fast-actions">
+          <a href="contacto.html" class="btn btn-white">
+            Escribir Mensaje
+          </a>
+          <a href="https://wa.me/" target="_blank" rel="noopener" class="btn btn-outline-white">
+            WhatsApp Directo
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL LIGHTBOX (VISOR EN PANTALLA COMPLETA) -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visor de fotografía">
+    <button class="lightbox-close" aria-label="Cerrar visor">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="Ampliación de fotografía">
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h4>Federico Raposo</h4>
+        <p>Fotógrafo &amp; Filmmaker independiente</p>
+      </div>
+      <div class="footer-social">
+        <a href="#" target="_blank" rel="noopener">Instagram</a>
+        <a href="#" target="_blank" rel="noopener">Behance</a>
+        <a href="#" target="_blank" rel="noopener">Vimeo</a>
+        <a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <p class="footer-copy">&copy; 2026 Federico Raposo. Todos los derechos reservados. Diseño editorial minimalista. · <a href="admin/" style="opacity: 0.35; font-size: 0.75rem; color: inherit; text-decoration: none;" title="Panel de gestión de fotos">Gestión</a></p>
+  </footer>
+
+  <!-- Netlify Identity (Gestión de acceso y redirección a /admin/) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", (user) => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

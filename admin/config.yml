@@ -1,0 +1,49 @@
+backend:
+  name: git-gateway
+  branch: main
+
+locale: 'es'
+
+media_folder: "assets/fotos"
+public_folder: "/assets/fotos"
+
+collections:
+  - name: "portfolio"
+    label: "Gestión de Portafolio"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - file: "data/galeria.json"
+        label: "Fotografías de la Galería"
+        name: "galeria"
+        fields:
+          - label: "Colección de Fotos"
+            name: "fotos"
+            widget: "list"
+            summary: "{{fields.titulo}} [{{fields.categoria}}]"
+            fields:
+              - label: "Título de la Foto"
+                name: "titulo"
+                widget: "string"
+              - label: "Categoría"
+                name: "categoria"
+                widget: "select"
+                options:
+                  - { label: "Gastronomía", value: "gastronomia" }
+                  - { label: "Moda", value: "moda" }
+                  - { label: "Paisaje", value: "paisaje" }
+                  - { label: "Eventos", value: "eventos" }
+              - label: "Archivo de Imagen"
+                name: "imagen"
+                widget: "image"
+              - label: "Cámara / Lente"
+                name: "equipo"
+                widget: "string"
+                required: false
+                hint: "Ejemplo: Sony A7 IV • 50mm f/1.4"
+              - label: "¿Mostrar en Portada (Inicio)?"
+                name: "destacada"
+                widget: "boolean"
+                default: false
+                required: false
