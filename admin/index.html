@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estudio de Gestión | Federico Raposo</title>
+  <title>Acceso Privado | Federico Raposo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -18,11 +18,8 @@
       --border: #e6e2da;
       --accent: #111111;
       --accent-hover: #2a2a2a;
-      --gold: #b38e44;
       --danger: #b33939;
       --danger-bg: #fff0f0;
-      --success: #2e7d32;
-      --success-bg: #f0fdf4;
       --font-serif: "Playfair Display", Georgia, serif;
       --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -38,6 +35,96 @@
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
+    }
+
+    /* PANTALLA DE ACCESO RESTRINGIDO (LOCK SCREEN) */
+    .lock-screen {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      background: radial-gradient(circle at top, #ffffff, #faf9f6 70%);
+    }
+    .lock-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      max-width: 460px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .lock-icon-badge {
+      width: 54px;
+      height: 54px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.3rem;
+      color: var(--accent);
+    }
+    .lock-pre {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .lock-card h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 500;
+      margin-bottom: 0.85rem;
+    }
+    .lock-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .btn-lock-login {
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      font-size: 0.92rem;
+      font-weight: 500;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-lock-login:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+    .lock-footer {
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem;
+    }
+    .lock-footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .lock-footer a:hover {
+      color: var(--accent);
+    }
+
+    /* APLICACIÓN PRINCIPAL (OCULTA HASTA AUTENTICAR) */
+    #adminApp {
+      display: none;
+      min-height: 100vh;
       flex-direction: column;
     }
 
@@ -95,9 +182,8 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: #999;
+      background: #22c55e;
     }
-    .status-dot.active { background: #22c55e; }
 
     /* BOTONES */
     .btn {
@@ -576,75 +662,103 @@
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="admin-header">
-    <div class="header-inner">
-      <div class="brand">
-        <h1>Federico Raposo</h1>
-        <span>Estudio de Gestión Fotográfica</span>
+  <!-- PANTALLA DE ACCESO RESTRINGIDO (LOCK SCREEN) -->
+  <div id="lockScreen" class="lock-screen">
+    <div class="lock-card">
+      <div class="lock-icon-badge">&#128274;</div>
+      <p class="lock-pre">Área Exclusiva</p>
+      <h2>Federico Raposo</h2>
+      <p class="lock-desc">
+        Panel de gestión privada de obras y portafolio. Este sector está estrictamente restringido al administrador del sitio.
+      </p>
+      <button class="btn-lock-login" onclick="openLoginModal()">
+        Iniciar Sesión de Administrador
+      </button>
+
+      <div id="devBypassArea" style="display: none; margin-top: 1rem;">
+        <button class="btn btn-outline" style="font-size: 0.72rem; padding: 0.3rem 0.6rem;" onclick="activateDevMode()">
+          Acceso de Prueba Local (Dev)
+        </button>
       </div>
-      <div class="header-actions">
-        <div class="user-pill" id="userPill">
-          <span class="status-dot active"></span>
-          <span id="userStatus">Modo Activo</span>
+
+      <div class="lock-footer">
+        <a href="../index.html">&larr; Volver al sitio público</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- APLICACIÓN PRINCIPAL (SOLO VISIBLE CON LOGIN AUTENTICADO) -->
+  <div id="adminApp">
+    <!-- HEADER -->
+    <header class="admin-header">
+      <div class="header-inner">
+        <div class="brand">
+          <h1>Federico Raposo</h1>
+          <span>Estudio de Gestión Fotográfica</span>
         </div>
-        <a href="../galeria.html" target="_blank" class="btn btn-outline" title="Ver galería en vivo">
-          Ver Sitio &nearr;
-        </a>
-        <button id="authBtn" class="btn btn-outline" onclick="handleAuthClick()">
-          Iniciar Sesión
+        <div class="header-actions">
+          <div class="user-pill" id="userPill">
+            <span class="status-dot"></span>
+            <span id="userStatus">Administrador</span>
+          </div>
+          <a href="../galeria.html" target="_blank" class="btn btn-outline" title="Ver galería pública en vivo">
+            Ver Sitio &nearr;
+          </a>
+          <button class="btn btn-outline" onclick="logoutAdmin()">
+            Cerrar Sesión
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="admin-main">
+      <section class="admin-hero">
+        <div class="admin-title-area">
+          <h2>Colección de Obras</h2>
+          <p>Añade nuevas capturas, edita fichas técnicas o cambia el orden de exhibición de tu portafolio.</p>
+        </div>
+        <div>
+          <button class="btn btn-primary" onclick="openAddModal()">
+            + Añadir Fotografía
+          </button>
+        </div>
+      </section>
+
+      <!-- BARRA DE FILTROS -->
+      <div class="toolbar-row">
+        <div class="filter-pills" id="filterPills">
+          <button class="filter-pill active" data-filter="all" onclick="filterGallery('all')">Todas</button>
+          <button class="filter-pill" data-filter="gastronomia" onclick="filterGallery('gastronomia')">Gastronomía</button>
+          <button class="filter-pill" data-filter="moda" onclick="filterGallery('moda')">Moda</button>
+          <button class="filter-pill" data-filter="paisaje" onclick="filterGallery('paisaje')">Paisaje</button>
+          <button class="filter-pill" data-filter="eventos" onclick="filterGallery('eventos')">Eventos</button>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);" id="counterLabel">
+          Cargando fotos...
+        </div>
+      </div>
+
+      <!-- GRID DE FOTOS -->
+      <div class="photos-grid" id="photosGrid">
+        <!-- Se llena dinámicamente por JavaScript -->
+      </div>
+    </main>
+
+    <!-- BARRA FLOTANTE DE GUARDADO Y PUBLICACIÓN -->
+    <div class="floating-save-bar" id="saveBar">
+      <div class="save-bar-info">
+        <span class="save-indicator"></span>
+        <span id="saveBarText">Tienes cambios pendientes sin publicar</span>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn btn-outline" style="color: #fff; border-color: rgba(255,255,255,0.25);" onclick="revertChanges()">
+          Descartar
+        </button>
+        <button class="btn btn-primary btn-publish" id="publishBtn" onclick="publishChanges()">
+          Publicar en la Web &rarr;
         </button>
       </div>
-    </div>
-  </header>
-
-  <!-- CONTENIDO PRINCIPAL -->
-  <main class="admin-main">
-    <section class="admin-hero">
-      <div class="admin-title-area">
-        <h2>Colección de Obras</h2>
-        <p>Añade nuevas capturas, edita fichas técnicas o cambia el orden de exhibición de tu portafolio.</p>
-      </div>
-      <div>
-        <button class="btn btn-primary" onclick="openAddModal()">
-          + Añadir Fotografía
-        </button>
-      </div>
-    </section>
-
-    <!-- BARRA DE FILTROS -->
-    <div class="toolbar-row">
-      <div class="filter-pills" id="filterPills">
-        <button class="filter-pill active" data-filter="all" onclick="filterGallery('all')">Todas</button>
-        <button class="filter-pill" data-filter="gastronomia" onclick="filterGallery('gastronomia')">Gastronomía</button>
-        <button class="filter-pill" data-filter="moda" onclick="filterGallery('moda')">Moda</button>
-        <button class="filter-pill" data-filter="paisaje" onclick="filterGallery('paisaje')">Paisaje</button>
-        <button class="filter-pill" data-filter="eventos" onclick="filterGallery('eventos')">Eventos</button>
-      </div>
-      <div style="font-size: 0.8rem; color: var(--text-muted);" id="counterLabel">
-        Cargando fotos...
-      </div>
-    </div>
-
-    <!-- GRID DE FOTOS -->
-    <div class="photos-grid" id="photosGrid">
-      <!-- Se llena por JavaScript -->
-    </div>
-  </main>
-
-  <!-- BARRA FLOTANTE DE GUARDADO Y PUBLICACIÓN -->
-  <div class="floating-save-bar" id="saveBar">
-    <div class="save-bar-info">
-      <span class="save-indicator"></span>
-      <span id="saveBarText">Tienes cambios pendientes sin publicar</span>
-    </div>
-    <div style="display: flex; gap: 0.5rem;">
-      <button class="btn btn-outline" style="color: #fff; border-color: rgba(255,255,255,0.25);" onclick="revertChanges()">
-        Descartar
-      </button>
-      <button class="btn btn-primary btn-publish" id="publishBtn" onclick="publishChanges()">
-        Publicar en la Web &rarr;
-      </button>
     </div>
   </div>
 
@@ -701,7 +815,7 @@
         <div class="form-group" style="padding-top: 0.5rem;">
           <label class="switch-label">
             <input type="checkbox" id="destacadaInput" class="switch-checkbox">
-            <span><strong>Mostrar en Portada (Inicio)</strong> — Destaca esta pieza en la sección principal del sitio.</span>
+            <span><strong>Mostrar en Portada (Inicio)</strong> — Destaca esta pieza en la portada principal.</span>
           </label>
         </div>
 
@@ -725,57 +839,76 @@
     let selectedCategory = 'gastronomia';
     let currentImageData = '';
     let currentUploadFile = null;
-    let pendingUploads = new Map(); // index -> { file, base64 }
+    let pendingUploads = new Map();
     let hasChanges = false;
-    let remoteSha = null;
 
-    /* INICIALIZACIÓN */
+    /* CONTROL DE ACCESO ESTRICTO */
     document.addEventListener("DOMContentLoaded", () => {
+      checkLocalDev();
       initNetlifyIdentity();
-      loadFotosData();
     });
+
+    function checkLocalDev() {
+      const isLocal = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+      if (isLocal) {
+        const bypass = document.getElementById("devBypassArea");
+        if (bypass) bypass.style.display = "block";
+      }
+    }
+
+    function activateDevMode() {
+      grantAccess({ email: "desarrollo@local.dev" });
+    }
 
     function initNetlifyIdentity() {
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => updateAuthUI(user));
+        window.netlifyIdentity.on("init", user => {
+          if (user) {
+            grantAccess(user);
+          } else {
+            lockAccess();
+          }
+        });
         window.netlifyIdentity.on("login", user => {
-          updateAuthUI(user);
+          grantAccess(user);
           window.netlifyIdentity.close();
-          showToast(`Bienvenido, ${user.user_metadata?.full_name || user.email}`);
-          loadFotosData();
+          showToast(`Acceso concedido: ${user.user_metadata?.full_name || user.email}`);
         });
         window.netlifyIdentity.on("logout", () => {
-          updateAuthUI(null);
+          lockAccess();
           showToast("Sesión cerrada");
         });
       }
     }
 
-    function updateAuthUI(user) {
-      const authBtn = document.getElementById("authBtn");
-      const userStatus = document.getElementById("userStatus");
-      const userPill = document.getElementById("userPill");
-
-      if (user) {
-        authBtn.textContent = "Cerrar Sesión";
-        userStatus.textContent = user.email;
-        userPill.querySelector(".status-dot").className = "status-dot active";
+    function openLoginModal() {
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.open();
       } else {
-        authBtn.textContent = "Iniciar Sesión";
-        userStatus.textContent = "Modo Visual";
-        userPill.querySelector(".status-dot").className = "status-dot";
+        alert("El servicio de autenticación no está disponible sin conexión.");
       }
     }
 
-    function handleAuthClick() {
+    function logoutAdmin() {
       if (window.netlifyIdentity) {
-        const user = window.netlifyIdentity.currentUser();
-        if (user) {
-          window.netlifyIdentity.logout();
-        } else {
-          window.netlifyIdentity.open();
-        }
+        window.netlifyIdentity.logout();
       }
+      lockAccess();
+    }
+
+    function grantAccess(user) {
+      document.getElementById("lockScreen").style.display = "none";
+      const app = document.getElementById("adminApp");
+      app.style.display = "flex";
+      document.getElementById("userStatus").textContent = user.email || "Administrador";
+      loadFotosData();
+    }
+
+    function lockAccess() {
+      document.getElementById("lockScreen").style.display = "flex";
+      document.getElementById("adminApp").style.display = "none";
+      fotos = [];
+      initialFotos = [];
     }
 
     /* CARGA DE DATOS */
@@ -861,7 +994,7 @@
       renderGrid();
     }
 
-    /* MOVER / REORDENAR FOTO */
+    /* REORDENAR FOTO */
     function movePhoto(index, delta) {
       const newIndex = index + delta;
       if (newIndex < 0 || newIndex >= fotos.length) return;
@@ -873,10 +1006,10 @@
     /* ELIMINAR FOTO */
     function deletePhoto(index) {
       const item = fotos[index];
-      if (confirm(`¿Estás seguro de eliminar la fotografía "${item.titulo}" de la galería?`)) {
+      if (confirm(`¿Estás seguro de retirar la fotografía "${item.titulo}" del catálogo?`)) {
         fotos.splice(index, 1);
         renderGrid();
-        showToast("Fotografía eliminada");
+        showToast("Fotografía eliminada del catálogo");
       }
     }
 
@@ -993,7 +1126,7 @@
       renderGrid();
     }
 
-    /* COMPROBAR SI HAY CAMBIOS PENDIENTES */
+    /* COMPROBAR SI HAY CAMBIOS */
     function checkChanges() {
       const saveBar = document.getElementById("saveBar");
       hasChanges = JSON.stringify(fotos) !== JSON.stringify(initialFotos);
@@ -1019,16 +1152,7 @@
 
       try {
         if (!user) {
-          // Si no hay sesión en Netlify Identity, ofrece login o descarga
-          const loginFirst = confirm("Para publicar directamente en Netlify necesitas iniciar sesión con tu cuenta de fotógrafo.\n\n¿Deseas iniciar sesión ahora?");
-          if (loginFirst && window.netlifyIdentity) {
-            window.netlifyIdentity.open();
-          } else {
-            downloadUpdatedJSON();
-          }
-          btn.disabled = false;
-          btn.textContent = "Publicar en la Web →";
-          return;
+          throw new Error("No hay una sesión activa de administrador.");
         }
 
         const token = await user.jwt();
@@ -1058,7 +1182,7 @@
         }
         pendingUploads.clear();
 
-        // 2. Obtener el SHA actual de data/galeria.json en GitHub
+        // 2. Obtener SHA actual de galeria.json
         const getShaRes = await fetch("/.netlify/git/github/contents/data/galeria.json", { headers });
         let currentSha = null;
         if (getShaRes.ok) {
@@ -1066,7 +1190,7 @@
           currentSha = shaData.sha;
         }
 
-        // 3. Hacer commit del nuevo JSON
+        // 3. Commit del JSON
         const jsonString = JSON.stringify({ fotos }, null, 2);
         const encodedContent = btoa(unescape(encodeURIComponent(jsonString)));
 
@@ -1084,7 +1208,7 @@
         });
 
         if (!putRes.ok) {
-          throw new Error("No se pudo confirmar el commit en GitHub a través de Netlify Git Gateway.");
+          throw new Error("Error al publicar en GitHub a través de Netlify Git Gateway.");
         }
 
         initialFotos = JSON.parse(JSON.stringify(fotos));
@@ -1092,23 +1216,11 @@
         showToast("✓ ¡Galería publicada con éxito! La web se actualizará en unos instantes.");
       } catch (err) {
         console.error(err);
-        alert("Aviso: " + err.message + "\n\nSe descargará una copia de seguridad de galeria.json.");
-        downloadUpdatedJSON();
+        alert("Error de publicación: " + err.message);
       } finally {
         btn.disabled = false;
         btn.textContent = "Publicar en la Web →";
       }
-    }
-
-    function downloadUpdatedJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ fotos }, null, 2));
-      const a = document.createElement("a");
-      a.setAttribute("href", dataStr);
-      a.setAttribute("download", "galeria.json");
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      showToast("Descargado galeria.json");
     }
 
     function showToast(msg) {
