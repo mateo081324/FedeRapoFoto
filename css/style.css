@@ -214,7 +214,7 @@ main {
    PORTADA EDITORIAL (INDEX) - NUEVO SISTEMA VISUAL
    -------------------------------------------------------------------------- */
 .hero-editorial-section {
-  padding: 4.5rem 1.5rem 4rem;
+  padding: 1rem 1.5rem 4rem;
   border-bottom: 1px solid var(--border);
 }
 
