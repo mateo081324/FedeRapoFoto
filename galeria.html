@@ -37,7 +37,6 @@
 
   <main class="container">
     <div class="page-header">
-      <p style="text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.75rem; color: var(--text-muted);">Colección Fotográfica</p>
       <h1>Galería de Obras</h1>
       <p>Selección curada en gastronomía de alta gama, sesiones editoriales de moda, naturaleza virgen y eventos de marca o culturales.</p>
     </div>
@@ -168,11 +167,20 @@
   </main>
 
   <!-- MODAL LIGHTBOX -->
-  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visor de imagen">
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visor de fotografía">
     <button class="lightbox-close" aria-label="Cerrar visor">&times;</button>
+    <button class="lightbox-nav lightbox-prev" aria-label="Fotografía anterior" title="Anterior (←)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="lightbox-nav lightbox-next" aria-label="Siguiente fotografía" title="Siguiente (→)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
     <div class="lightbox-content">
-      <img id="lightbox-img" src="" alt="Ampliación">
-      <div id="lightbox-caption" class="lightbox-caption"></div>
+      <img id="lightbox-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="Ampliación de fotografía">
+      <div class="lightbox-footer">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+        <div id="lightbox-counter" class="lightbox-counter"></div>
+      </div>
     </div>
   </div>
 

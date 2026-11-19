@@ -1,17 +1,71 @@
 /**
  * Portfolio de Fotografía - Scripts principales
+ * Principios de interacción y microanimación (Emil Kowalski / Impeccable)
  */
 
 document.addEventListener("DOMContentLoaded", () => {
+  initHeaderScroll();
   initMobileNav();
   initGalleryFilter();
   initLightbox();
   initContactForm();
+  initScrollReveal();
   loadDynamicGallery();
   loadDynamicVideos();
   loadDynamicAbout();
   runSelfCheck();
 });
+
+/* --------------------------------------------------------------------------
+   HEADER DINÁMICO CON SCROLL
+   -------------------------------------------------------------------------- */
+function initHeaderScroll() {
+  const header = document.querySelector(".header");
+  if (!header) return;
+
+  const onScroll = () => {
+    if (window.scrollY > 24) {
+      header.classList.add("scrolled");
+    } else {
+      header.classList.remove("scrolled");
+    }
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+}
+
+/* --------------------------------------------------------------------------
+   SISTEMA DE REVELACIÓN CON SCROLL (INTERSECTION OBSERVER)
+   -------------------------------------------------------------------------- */
+function initScrollReveal() {
+  const targets = document.querySelectorAll(
+    ".curated-section, .series-section, .manifesto-section, .contact-fast-strip, .videos-grid, .about-grid, .gear-grid, .contact-grid"
+  );
+  if (!targets.length) return;
+
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach((el) => el.classList.add("is-revealed"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-revealed");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+  );
+
+  targets.forEach((el) => {
+    el.classList.add("reveal");
+    observer.observe(el);
+  });
+}
 
 /* --------------------------------------------------------------------------
    MENÚ MÓVIL
@@ -23,12 +77,14 @@ function initMobileNav() {
   if (!toggle || !navLinks) return;
 
   toggle.addEventListener("click", () => {
-    navLinks.classList.toggle("open");
+    const isOpen = navLinks.classList.toggle("open");
+    toggle.classList.toggle("open", isOpen);
+    toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
   });
 }
 
 /* --------------------------------------------------------------------------
-   FILTROS DE LA GALERÍA
+   FILTROS DE LA GALERÍA CON TRANSICIÓN SUAVE
    -------------------------------------------------------------------------- */
 function initGalleryFilter() {
   const filterBtns = document.querySelectorAll(".filter-btn");
@@ -36,9 +92,24 @@ function initGalleryFilter() {
 
   const applyFilter = (filter) => {
     filterBtns.forEach((b) => b.classList.toggle("active", b.getAttribute("data-filter") === filter));
-    document.querySelectorAll(".gallery-grid .gallery-item").forEach((item) => {
+    const items = document.querySelectorAll(".gallery-grid .gallery-item");
+    items.forEach((item) => {
       const match = filter === "all" || item.getAttribute("data-category") === filter;
-      item.style.display = match ? "block" : "none";
+      if (match) {
+        item.style.display = "block";
+        requestAnimationFrame(() => {
+          item.style.opacity = "1";
+          item.style.transform = "scale(1)";
+        });
+      } else {
+        item.style.opacity = "0";
+        item.style.transform = "scale(0.96)";
+        setTimeout(() => {
+          if (item.getAttribute("data-category") !== filter && filter !== "all") {
+            item.style.display = "none";
+          }
+        }, 220);
+      }
     });
   };
 
@@ -46,7 +117,6 @@ function initGalleryFilter() {
     btn.addEventListener("click", () => applyFilter(btn.getAttribute("data-filter")));
   });
 
-  // Activa filtro automático si la URL trae hash (ej. galeria.html#gastronomia)
   const syncHash = () => {
     const hash = window.location.hash.slice(1);
     if (hash && document.querySelector(`.filter-btn[data-filter="${hash}"]`)) {
@@ -59,31 +129,84 @@ function initGalleryFilter() {
 }
 
 /* --------------------------------------------------------------------------
-   VISOR MODAL (LIGHTBOX)
+   VISOR MODAL ELEVADO (LIGHTBOX) CON NAVEGACIÓN Y SWIPE
    -------------------------------------------------------------------------- */
 function initLightbox() {
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
   const lightboxCaption = document.getElementById("lightbox-caption");
+  const lightboxCounter = document.getElementById("lightbox-counter");
   const closeBtn = document.querySelector(".lightbox-close");
+  const prevBtn = document.querySelector(".lightbox-prev");
+  const nextBtn = document.querySelector(".lightbox-next");
 
   if (!lightbox || !lightboxImg) return;
 
-  const openItem = (item) => {
+  let currentItems = [];
+  let currentIndex = 0;
+
+  const updateActiveItems = () => {
+    currentItems = Array.from(document.querySelectorAll(".gallery-grid .gallery-item")).filter(
+      (item) => window.getComputedStyle(item).display !== "none"
+    );
+  };
+
+  const renderCurrent = () => {
+    if (!currentItems.length || currentIndex < 0 || currentIndex >= currentItems.length) return;
+    const item = currentItems[currentIndex];
     const img = item.querySelector("img");
     if (!img) return;
+
     const title = item.querySelector("h3, h4")?.textContent || img.alt || "Fotografía";
     const gear = item.querySelector(".gear-tag, .gallery-meta")?.textContent || "";
 
-    lightboxImg.src = img.src;
-    lightboxCaption.textContent = gear ? `${title} — ${gear}` : title;
-    lightbox.classList.add("active");
+    lightboxImg.classList.add("changing");
+    setTimeout(() => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt || title;
+      if (lightboxCaption) {
+        lightboxCaption.textContent = gear ? `${title} — ${gear}` : title;
+      }
+      if (lightboxCounter) {
+        lightboxCounter.textContent = `${currentIndex + 1} / ${currentItems.length}`;
+      }
+      lightboxImg.classList.remove("changing");
+    }, 120);
   };
 
-  // Delegación de eventos para soportar items estáticos o cargados dinámicamente
+  const openItem = (item) => {
+    updateActiveItems();
+    const idx = currentItems.indexOf(item);
+    currentIndex = idx >= 0 ? idx : 0;
+    renderCurrent();
+    lightbox.classList.add("active");
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeLightbox = () => {
+    lightbox.classList.remove("active");
+    document.body.style.overflow = "";
+  };
+
+  const nextItem = () => {
+    if (!currentItems.length) return;
+    currentIndex = (currentIndex + 1) % currentItems.length;
+    renderCurrent();
+  };
+
+  const prevItem = () => {
+    if (!currentItems.length) return;
+    currentIndex = (currentIndex - 1 + currentItems.length) % currentItems.length;
+    renderCurrent();
+  };
+
+  // Delegación de click
   document.addEventListener("click", (e) => {
     const item = e.target.closest(".gallery-item");
-    if (item) openItem(item);
+    if (item) {
+      e.preventDefault();
+      openItem(item);
+    }
   });
 
   document.addEventListener("keydown", (e) => {
@@ -96,18 +219,46 @@ function initLightbox() {
     }
   });
 
-  const closeLightbox = () => lightbox.classList.remove("active");
-
   if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
+  if (prevBtn) prevBtn.addEventListener("click", prevItem);
+  if (nextBtn) nextBtn.addEventListener("click", nextItem);
+
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox) closeLightbox();
   });
 
+  // Atajos de teclado: Escape, Flecha Izquierda, Flecha Derecha
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && lightbox.classList.contains("active")) {
-      closeLightbox();
-    }
+    if (!lightbox.classList.contains("active")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowRight") nextItem();
+    if (e.key === "ArrowLeft") prevItem();
   });
+
+  // Soporte de gestos táctiles (Swipe)
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  lightbox.addEventListener(
+    "touchstart",
+    (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    },
+    { passive: true }
+  );
+
+  lightbox.addEventListener(
+    "touchend",
+    (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diffX = touchEndX - touchStartX;
+      if (Math.abs(diffX) > 45) {
+        if (diffX < 0) nextItem();
+        else prevItem();
+      }
+    },
+    { passive: true }
+  );
 }
 
 /* --------------------------------------------------------------------------
